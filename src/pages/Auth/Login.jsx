@@ -31,15 +31,16 @@ const Login = ({ onClose, onSuccess, onSwitch }) => {
     try {
       const res = await axios.post(LOGIN_URL, formData);
       if (res.status === 200) {
-        const token = res.data?.token;
+        const token = res.data?.user.refresh_token;
         const user = res.data?.user;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("refresh_token", token);
         localStorage.setItem("isLoginned", "true");
+        localStorage.setItem("user", JSON.stringify(user));
 
         setShowSuccessPopup(true);
         setTimeout(() => {
-          onSuccess(user?.Name || "User");
+          onSuccess(res.data?.user.Name || "User");
+          setShowSuccessPopup(false)
           onClose();
         }, 2000);
       } else {
@@ -116,13 +117,14 @@ const Login = ({ onClose, onSuccess, onSwitch }) => {
               {showPassword ? <EyeOff /> : <Eye />}
             </button>
             <div className="text-right mt-0.5 text-sm">
-            <span
-              className="text-amber-700 font-medium cursor-pointer hover:underline"
-              onClick={() => alert('Forgot Password feature coming soon!')}
-            >
-              Forgot Password?
-            </span>
-          </div>
+              <span
+                className="text-amber-700 font-medium cursor-pointer hover:underline"
+                onClick={() => (window.location.href = "/forgot-password")}
+              >
+                Forgot Password?
+              </span>
+
+            </div>
           </div>
 
           {message && (

@@ -1,6 +1,6 @@
 import axios from "axios";
 
  const api = axios.create({
-    baseURL : "https://api.shivyantra.com"
+    baseURL : "https://shivyantra.onrender.com/api"
 })
 export default api;

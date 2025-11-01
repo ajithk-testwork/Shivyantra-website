@@ -110,7 +110,7 @@ const Contact = () => {
               <input
                 type="text"
                 placeholder="Your Name"
-                className="w-full rounded-xl border border-amber-300 p-3 focus:ring-2 focus:ring-skambery-400 focus:border-amber-500 outline-none transition"
+                className="w-full rounded-xl border border-amber-300 p-3 focus:ring-2 focus:ring-amber-400 focus:border-amber-500 outline-none transition"
               />
             </div>
 

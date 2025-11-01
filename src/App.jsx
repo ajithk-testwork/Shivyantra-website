@@ -12,12 +12,14 @@ import Profile from "./components/Profile";
 import BlogContent from "./pages/Blogs/BlogContent";
 import MainNavbar from "./components/MainNavbar";
 import Footer from "./components/Footer";
-import ForgotPassword from "./components/ForgotPassword";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 import { Toaster } from "react-hot-toast";
 import ReplacementPolicy from "./pages/Insights/ReplacementPolicy";
 import ShippingPolicy from "./pages/Insights/ShippingPolicy";
 import CancellationPolicy from "./pages/Insights/CancellationPolicy";
 import StrategicVision from "./pages/Insights/StrategicVision";
+import Login from "./pages/Auth/Login";
 
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
   return (
     <Router>
       <MainNavbar />
+
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -35,8 +38,10 @@ function App() {
         <Route path="/contact" element={<Contactus />} />
         <Route path="/card" element={<Card />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />}/>
         <Route path="/blogcontent" element={<BlogContent />} />
         <Route path="/forgot-password" element={<ForgotPassword />}/>
+        <Route path="/reset-password" element={<ResetPassword />} /> 
         <Route path="/replacement-policy" element={<ReplacementPolicy />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />}/>
        <Route path="/cancellation-policy" element={<CancellationPolicy />} />

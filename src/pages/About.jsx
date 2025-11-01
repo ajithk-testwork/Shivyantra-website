@@ -6,8 +6,8 @@ import image from "../assets/About.webp";
 const About = () => {
 
   useEffect(() => {
-          window.scrollTo(0, 0);
-        }, []);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section className=" min-h-screen bg-gradient-to-b from-orange-50 via-white to-amber-50 text-gray-800 py-16 px-6 md:px-20">
@@ -19,18 +19,18 @@ const About = () => {
         className="text-center mb-14"
       >
         <div className="text-center mb-14">
-        <div className="flex justify-center mb-4">
-          <div className="w-20 h-[2px] bg-gradient-to-r from-gray-400 to-amber-600" />
+          <div className="flex justify-center mb-4">
+            <div className="w-20 h-[2px] bg-gradient-to-r from-gray-400 to-amber-600" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+            <span className="text-[#3a3a3a]"> About </span>
+            <span className="text-[#b45309]">Shivyantra</span>
+          </h2>
+          <p className="text-gray-600 mt-3">
+            Upholding divine heritage, authenticity, and craftsmanship through
+            sacred Rudraksha and traditional artistry.
+          </p>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-          <span className="text-[#3a3a3a]"> About </span>
-          <span className="text-[#b45309]">Shivyantra</span>
-        </h2>
-        <p className="text-gray-600 mt-3">
-          Upholding divine heritage, authenticity, and craftsmanship through
-          sacred Rudraksha and traditional artistry.
-        </p>
-      </div>
       </motion.div>
 
       {/* Main Content */}
@@ -169,9 +169,9 @@ const About = () => {
         viewport={{ once: true }}
         className="mt-20 flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto"
       >
-        
 
-       
+
+
       </motion.div>
     </section>
   );

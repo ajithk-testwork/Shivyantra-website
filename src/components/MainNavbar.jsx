@@ -8,14 +8,12 @@ import {
   LogOut,
   Menu,
   X,
-  CheckCircle2
+  CheckCircle2,
 } from "lucide-react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import AuthModal from "../pages/Auth/AuthModal";
 import toast from "react-hot-toast";
-import { logoutUser } from "../pages/Auth/LogoutUser";
-
 
 const LOGOUT_URL = "https://shivyantra.onrender.com/api/logout";
 
@@ -24,7 +22,6 @@ const MainNavbar = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [showLogin, setShowLogin] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const navigate = useNavigate();
 
@@ -36,7 +33,6 @@ const MainNavbar = () => {
     { name: "Contact", path: "/contact" },
   ];
 
-  // ✅ Load user safely on mount
   useEffect(() => {
     try {
       const raw = localStorage.getItem("user");
@@ -50,31 +46,60 @@ const MainNavbar = () => {
     }
   }, []);
 
-  // ✅ Proper Logout (backend + toast + delay + cleanup)
- const handleLogout = async () => {
-  const result = await logoutUser();
+  const handleLogout = async () => {
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const refreshToken = localStorage.getItem("refresh_token") || user?.refresh_token;
 
-  if (result.success) {
+  if (!refreshToken) {
+    toast.error("No active session found. Please login again.");
+    navigate("/");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      LOGOUT_URL,
+      { refresh_token: refreshToken },
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    console.log("✅ Logout successful:", response.data);
+
+    ["refresh_token", "user", "isLoginned"].forEach((key) =>
+      localStorage.removeItem(key)
+    );
+
+    toast.success("You’ve been logged out successfully!");
     setShowLogoutPopup(true);
-    toast.success("Logged out successfully!");
 
     setTimeout(() => {
       setShowLogoutPopup(false);
       setUser(null);
-      navigate("/"); // optional redirect
-    }, 2000);
-  } else {
-    toast.error(result.message || "Logout failed");
+      navigate("/");
+      window.location.reload();
+    }, 1500);
+  } catch (err) {
+    const message =
+      err.response?.data?.message ||
+      err.response?.data?.error?.message ||
+      "Logout failed. Please try again.";
+
+    console.error("❌ Logout error:", err);
+    toast.error(message);
   }
 };
-
-
 
   return (
     <nav className="w-full bg-white shadow-md sticky top-0 z-[1000] border-b border-amber-100">
       {/* 🔶 Top Section */}
       <div className="flex justify-between items-center bg-amber-600 px-6 py-4 relative">
-        {/* Logo */}
         <Link
           to="/"
           className="text-3xl font-extrabold text-white hover:scale-105 transition-transform duration-300"
@@ -102,6 +127,7 @@ const MainNavbar = () => {
         </button>
       </div>
 
+      {/* 📱 Mobile Nav */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -109,7 +135,7 @@ const MainNavbar = () => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-amber-800 flex flex-col items-center space-y-3 py-3"
+            className="lg:hidden bg-amber-6 00 flex flex-col items-center space-y-3 py-3"
           >
             {links.map((link) => (
               <Link
@@ -125,8 +151,9 @@ const MainNavbar = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col md:flex-row items-center justify-between px-6 py-6 gap-3 md:gap-0">
-        <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+      {/* 🔍 Search + User Controls */}
+      <div className="flex   md:flex-row items-center justify-between px-6 py-6 gap-3 md:gap-0">
+        <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-700">
           <PhoneCall className="w-4 h-4 text-amber-700" />
           <span>+91 9876543210</span>
         </div>
@@ -157,7 +184,7 @@ const MainNavbar = () => {
             >
               <div
                 className="flex items-center gap-2 border-2 px-3 py-2 rounded-full 
-                border-amber-600 text-amber-600 font-semibold 
+                border-amber-600 text-black font-semibold 
                 hover:bg-amber-600 hover:text-white hover:shadow-md 
                 transition-all duration-300 cursor-pointer"
               >
@@ -206,7 +233,9 @@ const MainNavbar = () => {
           )}
         </div>
       </div>
-       <AnimatePresence>
+
+      {/* ✅ Logout Popup */}
+      <AnimatePresence>
         {showLogoutPopup && (
           <motion.div
             key="logout-popup"
@@ -230,23 +259,18 @@ const MainNavbar = () => {
         )}
       </AnimatePresence>
 
-  {showAuth && (
-  <AuthModal
-    onClose={() => setShowAuth(false)}
-    onSuccess={(name) => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      setUser(storedUser);
-      setShowAuth(false);
-      toast.success(`Welcome ${name}!`);
-    }}
-  />
-)}
-
-
-
-
-
-
+      {/* 🧩 Auth Modal */}
+      {showAuth && (
+        <AuthModal
+          onClose={() => setShowAuth(false)}
+          onSuccess={(name) => {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            setUser(storedUser);
+            setShowAuth(false);
+            toast.success(`Welcome ${name}!`);
+          }}
+        />
+      )}
     </nav>
   );
 };

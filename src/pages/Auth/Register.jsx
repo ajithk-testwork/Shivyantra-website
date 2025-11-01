@@ -53,17 +53,20 @@ const Register = ({ onClose, onSuccess, onSwitch }) => {
   const handleChange = (e) =>
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
-  const finishSuccess = (user, token) => {
-    setShowSuccessPopup(true);
-    timeoutRef.current = setTimeout(() => {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("isLoginned", "true");
-      onSuccess(user?.Name || user?.Email);
-      setShowSuccessPopup(false);
-      onClose();
-    }, 2000);
-  };
+ const finishSuccess = (user, token) => {
+  setShowSuccessPopup(true);
+  timeoutRef.current = setTimeout(() => {
+   
+
+  
+    setShowSuccessPopup(false);
+
+    
+    onSwitch(); 
+
+  }, 2000);
+};
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
