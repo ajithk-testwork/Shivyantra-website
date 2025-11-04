@@ -11,7 +11,9 @@ const HomeSlider = () => {
   useEffect(() => {
     const fetchSliders = async () => {
       try {
-        const res = await api.get("/home-sliders?populate[ImageName][fields][0]=url");
+        const res = await api.get(
+          "/home-sliders?populate[ImageName][fields][0]=url"
+        );
         const sliderArray = res.data?.data || [];
         setSliders(sliderArray);
       } catch (error) {
@@ -21,12 +23,10 @@ const HomeSlider = () => {
     fetchSliders();
   }, []);
 
-  // ✅ Auto-slide every 4 seconds
+  // ✅ Auto-slide every 5 seconds
   useEffect(() => {
     if (sliders.length === 0) return;
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 4000);
+    const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [sliders]);
 
@@ -45,16 +45,12 @@ const HomeSlider = () => {
   // ✅ Animation Variants
   const variants = {
     enter: (direction) => ({
-      x: direction > 0 ? 300 : -300,
+      x: direction > 0 ? 150 : -150,
       opacity: 0,
     }),
-    center: {
-      x: 0,
-      opacity: 1,
-      zIndex: 1,
-    },
+    center: { x: 0, opacity: 1, zIndex: 1 },
     exit: (direction) => ({
-      x: direction > 0 ? -300 : 300,
+      x: direction > 0 ? -150 : 150,
       opacity: 0,
       zIndex: 0,
     }),
@@ -65,7 +61,7 @@ const HomeSlider = () => {
   }
 
   return (
-    <div className="relative w-full h-[550px] md:h-[650px]  overflow-hidden rounded-2xl shadow-lg">
+    <div className="relative w-full h-[280px] sm:h-[400px] md:h-[550px] lg:h-[650px] overflow-hidden rounded-none sm:rounded-2xl shadow-lg">
       <AnimatePresence custom={direction} mode="wait">
         <motion.img
           key={sliders[currentIndex]?.id}
@@ -82,31 +78,31 @@ const HomeSlider = () => {
           animate="center"
           exit="exit"
           transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
+            x: { type: "spring", stiffness: 200, damping: 25 },
             opacity: { duration: 0.4 },
           }}
         />
       </AnimatePresence>
 
-      {/* ✅ Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20" />
+      {/* ✅ Soft Gradient Overlay for Divine Look */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
 
-      {/* ✅ Prev / Next Buttons */}
+      {/* ✅ Navigation Buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-5 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full"
+        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1.5 sm:p-2 rounded-full transition"
       >
         ❮
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-5 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full"
+        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1.5 sm:p-2 rounded-full transition"
       >
         ❯
       </button>
 
-      {/* ✅ Navigation Dots */}
-      <div className="absolute bottom-6 w-full flex justify-center gap-3">
+      {/* ✅ Dots */}
+      <div className="absolute bottom-4 sm:bottom-6 w-full flex justify-center gap-2 sm:gap-3">
         {sliders.map((_, index) => (
           <button
             key={index}
@@ -114,10 +110,10 @@ const HomeSlider = () => {
               setDirection(index > currentIndex ? 1 : -1);
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? "bg-white scale-125"
-                : "bg-gray-400/70 hover:bg-white/70"
+                ? "bg-amber-400 scale-125"
+                : "bg-gray-300 hover:bg-amber-300"
             }`}
           />
         ))}

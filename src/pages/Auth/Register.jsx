@@ -315,7 +315,7 @@ const Register = ({ onClose, onSuccess, onSwitch }) => {
                 >
                   <CheckCircle2 className="text-green-500 w-16 h-16 mb-4 animate-bounce" />
                   <h4 className="text-2xl font-bold text-green-600 mb-2">
-                    Registration Complete!
+                    Registration Complete!         
                   </h4>
                   <p className="text-gray-700">
                     Welcome,{" "}

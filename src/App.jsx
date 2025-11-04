@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Shop from "./pages/Shop";
 import Blog from "./pages/Blogs/Blog";
 import Contactus from "./pages/Contactus"
-import Card from "./components/Card";
+import Cart from "./components/Cart";
 import Profile from "./components/Profile";
 import BlogContent from "./pages/Blogs/BlogContent";
 import MainNavbar from "./components/MainNavbar";
@@ -36,7 +36,7 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contactus />} />
-        <Route path="/card" element={<Card />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />}/>
         <Route path="/blogcontent" element={<BlogContent />} />

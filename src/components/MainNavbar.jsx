@@ -112,7 +112,7 @@ const MainNavbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className="text-white text-md font-semibold px-3 py-2 rounded-md hover:bg-white hover:text-amber-800 transition-all duration-300"
+              className="text-white text-md  font-semibold px-3 py-2 rounded-md hover:bg-white hover:text-amber-800 transition-all duration-300"
             >
               {link.name}
             </Link>
@@ -135,14 +135,14 @@ const MainNavbar = () => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-amber-6 00 flex flex-col items-center space-y-3 py-3"
+            className="lg:hidden bg-amber-600 flex flex-col items-center space-y-3 py-3"
           >
             {links.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
                 onClick={() => setMenuOpen(false)}
-                className="text-white text-md font-medium hover:bg-white hover:text-amber-800 px-4 py-2 rounded-md transition-all duration-300"
+                className="text-white  text-md font-medium hover:bg-white hover:text-amber-800 px-4 py-2 rounded-md transition-all duration-300"
               >
                 {link.name}
               </Link>
@@ -152,7 +152,7 @@ const MainNavbar = () => {
       </AnimatePresence>
 
       {/* 🔍 Search + User Controls */}
-      <div className="flex   md:flex-row items-center justify-between px-6 py-6 gap-3 md:gap-0">
+      <div className="flex   md:flex-row items-center justify-between px-6 py-3 gap-3 md:gap-0">
         <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-700">
           <PhoneCall className="w-4 h-4 text-amber-700" />
           <span>+91 9876543210</span>
