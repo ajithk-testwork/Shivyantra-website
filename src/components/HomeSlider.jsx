@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import api from "../Utilis/api"; // baseURL = "https://shivyantra.onrender.com/api"
+import api from "../Utilis/api"; 
 
 const HomeSlider = () => {
   const [sliders, setSliders] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = next, -1 = previous
+  const [direction, setDirection] = useState(1); 
 
   // ✅ Fetch slider data
   useEffect(() => {
@@ -84,10 +84,8 @@ const HomeSlider = () => {
         />
       </AnimatePresence>
 
-      {/* ✅ Soft Gradient Overlay for Divine Look */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
 
-      {/* ✅ Navigation Buttons */}
       <button
         onClick={prevSlide}
         className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1.5 sm:p-2 rounded-full transition"
@@ -101,7 +99,6 @@ const HomeSlider = () => {
         ❯
       </button>
 
-      {/* ✅ Dots */}
       <div className="absolute bottom-4 sm:bottom-6 w-full flex justify-center gap-2 sm:gap-3">
         {sliders.map((_, index) => (
           <button

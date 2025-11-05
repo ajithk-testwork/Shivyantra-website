@@ -43,11 +43,9 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-[#FFFDF8] via-amber-50 to-white overflow-hidden">
-      {/* Glow Background */}
+    <section className="relative py-24  overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,200,100,0.12)_0%,transparent_70%)] pointer-events-none"></div>
 
-      {/* Header */}
       <div className="text-center relative mb-16 px-4">
         <div className="flex justify-center mb-3">
           <Sparkles className="text-amber-700 w-8 h-8" />
@@ -61,7 +59,6 @@ const FAQSection = () => {
         <div className="mt-4 w-24 h-[2px] bg-amber-700 mx-auto rounded-full"></div>
       </div>
 
-      {/* FAQ Items */}
       <div className="max-w-4xl mx-auto px-6 space-y-5">
         {faqs.map((faq, index) => (
           <motion.div

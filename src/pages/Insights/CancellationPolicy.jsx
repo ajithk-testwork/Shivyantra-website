@@ -10,7 +10,6 @@ const CancellationPolicy = () => {
 
   return (
     <div className="bg-gradient-to-b from-orange-50 via-white to-amber-50 min-h-screen py-16 px-6 md:px-20 text-gray-800">
-      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -29,7 +28,6 @@ const CancellationPolicy = () => {
         </p>
       </motion.div>
 
-      {/* Policy Content */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

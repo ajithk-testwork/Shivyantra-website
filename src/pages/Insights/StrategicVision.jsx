@@ -10,7 +10,6 @@ const StrategicVision = () => {
 
   return (
     <div className="bg-gradient-to-b from-orange-50 via-white to-amber-50 min-h-screen py-16 px-6 md:px-20 text-gray-800">
-      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -30,7 +29,6 @@ const StrategicVision = () => {
         </p>
       </motion.div>
 
-      {/* Vision & Mission */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -64,13 +62,11 @@ const StrategicVision = () => {
           </p>
         </section>
 
-        {/* Our Services */}
         <section>
           <h2 className="text-3xl font-bold text-amber-800 mb-6">
             Our Services
           </h2>
 
-          {/* Service Group 1 */}
           <div className="space-y-6">
             <div>
               <h3 className="text-xl font-semibold text-amber-700 mb-2">

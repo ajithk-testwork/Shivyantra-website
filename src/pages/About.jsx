@@ -11,7 +11,6 @@ const About = () => {
 
   return (
     <section className=" min-h-screen bg-gradient-to-b from-orange-50 via-white to-amber-50 text-gray-800 py-16 px-6 md:px-20">
-      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,9 +32,7 @@ const About = () => {
         </div>
       </motion.div>
 
-      {/* Main Content */}
       <div className="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
-        {/* Image */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -50,7 +47,6 @@ const About = () => {
           />
         </motion.div>
 
-        {/* Text */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -80,10 +76,8 @@ const About = () => {
         </motion.div>
       </div>
 
-      {/* Divider */}
       <div className="h-[2px] bg-gradient-to-r from-yellow-700 via-red-500 to-yellow-500 my-16 rounded-full"></div>
 
-      {/* Mission Section */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -101,7 +95,6 @@ const About = () => {
         </p>
       </motion.div>
 
-      {/* Mission Cards */}
       <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
         {/* Card 1 */}
         <motion.div
@@ -117,7 +110,6 @@ const About = () => {
           </p>
         </motion.div>
 
-        {/* Card 2 */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="bg-white rounded-2xl shadow-md p-6 text-center border border-amber-200"
@@ -131,7 +123,6 @@ const About = () => {
           </p>
         </motion.div>
 
-        {/* Card 3 */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="bg-white rounded-2xl shadow-md p-6 text-center border border-amber-200"
@@ -146,7 +137,6 @@ const About = () => {
           </p>
         </motion.div>
 
-        {/* Card 4 */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="bg-white rounded-2xl shadow-md p-6 text-center border border-amber-200"
@@ -161,7 +151,6 @@ const About = () => {
         </motion.div>
       </div>
 
-      {/* Shivyantra Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

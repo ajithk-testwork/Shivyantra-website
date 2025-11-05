@@ -10,7 +10,6 @@ const ReplacementPolicy = () => {
 
   return (
     <div className="bg-gradient-to-b from-orange-50 via-white to-amber-50 min-h-screen text-gray-800 py-16 px-6 md:px-20">
-      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -26,14 +25,12 @@ const ReplacementPolicy = () => {
         </p>
       </motion.div>
 
-      {/* Content Section */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
         className="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-8 border border-amber-100"
       >
-        {/* Eligibility */}
         <section className="mb-10">
           <div className="flex items-center gap-3 mb-4">
             <ShieldCheck className="text-amber-700 w-7 h-7" />
@@ -52,7 +49,6 @@ const ReplacementPolicy = () => {
           </ul>
         </section>
 
-        {/* Process */}
         <section className="mb-10">
           <div className="flex items-center gap-3 mb-4">
             <RefreshCcw className="text-amber-700 w-7 h-7" />
@@ -79,7 +75,6 @@ const ReplacementPolicy = () => {
           </ol>
         </section>
 
-        {/* Exclusions */}
         <section className="mb-10">
           <div className="flex items-center gap-3 mb-4">
             <Truck className="text-amber-700 w-7 h-7" />
@@ -95,7 +90,6 @@ const ReplacementPolicy = () => {
           </ul>
         </section>
 
-        {/* Important Note */}
         <section>
           <div className="flex items-center gap-3 mb-4">
             <AlertTriangle className="text-red-500 w-7 h-7" />

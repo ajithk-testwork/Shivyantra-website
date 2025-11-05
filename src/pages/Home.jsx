@@ -10,6 +10,7 @@ import WhyChooseUs from "../components/WhyChooseUs";
 import AboutRudraksha from "../components/AboutRudraksha ";
 import RudrakshaConsultation from "../components/RudrakshaConsultation ";
 import Testimonial from "../components/Testimonial";
+import BannerImg from "../components/BannerImg";
 
 const Home = () => {
 
@@ -22,6 +23,7 @@ const Home = () => {
       <RudrakshaConsultation/>
       <OurBlog/>
       <WhyChooseUs/>
+      <BannerImg/>
       <FAQSection/>
       <Testimonial/>
     </>

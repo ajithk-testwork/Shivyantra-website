@@ -1,56 +1,64 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Gem, Sparkles, ShieldCheck } from "lucide-react";
+import rudrakshaImg from "../assets/about1.jpg"; // your image path
 
-const AboutRudraksha = () => {
+const AboutRudrakshaModern = () => {
   return (
-    <section className="relative py-24 bg-gradient-to-b from-amber-50 via-[#FFFDF8] to-amber-100 overflow-hidden">
-      {/* Ambient Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,200,130,0.2)_0%,transparent_70%)] pointer-events-none"></div>
+    <section
+      className="relative bg-cover bg-center bg-no-repeat py-32 sm:py-40 text-white"
+      style={{
+        backgroundImage: `url(${rudrakshaImg})`,
+      }}
+    >
+      {/* Overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent"></div>
 
-      {/* Container */}
-      <div className="max-w-5xl mx-auto px-6 text-center relative">
-        {/* Heading */}
+      {/* Content */}
+      <div className="relative max-w-5xl mx-auto px-6 text-center">
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl sm:text-5xl font-serif text-[#5a3e1b] tracking-wide"
+          transition={{ duration: 0.8 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-serif mb-4 leading-snug"
         >
-          Buy Original <span className="text-[#a36f1f]">Rudraksha Online</span>
+          Buy Original{" "}
+          <span className="text-amber-400">Rudraksha Online</span>
         </motion.h2>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-[#876c3f] mt-3 italic text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="text-amber-100 italic text-lg sm:text-xl max-w-3xl mx-auto"
         >
           100% Natural & Government Certified Rudraksha | Shiv Kripa Rudraksha Kendra
         </motion.p>
 
-        <div className="mt-4 w-28 h-[2px] bg-amber-700 mx-auto rounded-full"></div>
-
-        {/* Content */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="w-28 h-[2px] bg-amber-400 mx-auto mt-6 rounded-full origin-left"
+        ></motion.div>
+
+        {/* Card-style content overlay */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-12 bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-amber-200 p-10 sm:p-14 text-gray-700 leading-relaxed text-base sm:text-lg relative"
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mt-12 bg-white/10 backdrop-blur-md border border-amber-400/30 shadow-2xl rounded-3xl p-8 sm:p-12 text-amber-50 leading-relaxed"
         >
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-700 text-white px-6 py-2 rounded-full shadow-md font-semibold text-sm tracking-wide">
-            Shivyantra Authenticity Promise
-          </div>
-
           <p className="mb-6">
-            <strong className="text-amber-800 font-semibold">Shivyantra</strong> has been continuously supporting
-            and promoting the powerful spiritual benefits of Original Rudraksha. As
-            <span className="text-amber-700 font-medium"> Government Certified Rudraksha providers in Uttarakhand</span>,
-            we ensure that every devotee can easily
-            <span className="text-amber-700 font-medium"> Buy Rudraksha Online</span> that are
+            <strong className="text-amber-300 font-semibold">Shivyantra</strong> has been continuously supporting
+            and promoting the powerful spiritual benefits of Original Rudraksha. As{" "}
+            <span className="text-amber-300 font-medium">
+              Government Certified Rudraksha providers in Uttarakhand
+            </span>
+            , we ensure that every devotee can easily{" "}
+            <span className="text-amber-300 font-medium">Buy Rudraksha Online</span> that are
             100% natural and genuine, meant for true spiritual healing and transformation.
           </p>
 
@@ -62,37 +70,46 @@ const AboutRudraksha = () => {
 
           <p className="mb-6">
             We believe in the divine power of Original Rudraksha — helping devotees overcome
-            challenges and attain peace. Wearing
-            <span className="text-amber-700 font-medium"> Shivyantra</span> can
+            challenges and attain peace. Wearing{" "}
+            <span className="text-amber-300 font-medium">Shivyantra</span> can
             purify the soul, attract positivity, and align your spiritual energy with Lord
             Shiva’s blessings.
           </p>
 
           <p>
-            Visit our website to explore the <strong>Rudraksha Collection</strong> and
-            <span className="text-amber-700 font-medium"> Buy Rudraksha Online</span> that’s
+            Visit our website to explore the <strong>Rudraksha Collection</strong> and{" "}
+            <span className="text-amber-300 font-medium">Buy Rudraksha Online</span> that’s
             not just certified but spiritually awakened — a true symbol of divine connection.
           </p>
 
-          {/* Icon Accents */}
-          <div className="flex justify-center gap-10 mt-10 text-amber-700">
-            <div className="flex items-center gap-2 text-sm sm:text-base">
+          <div className="flex flex-wrap justify-center gap-6 mt-10 text-amber-300 font-medium">
+            <div className="flex items-center gap-2">
               <ShieldCheck className="w-5 h-5" />
               <span>Government Certified</span>
             </div>
-            <div className="flex items-center gap-2 text-sm sm:text-base">
+            <div className="flex items-center gap-2">
               <Gem className="w-5 h-5" />
               <span>100% Natural Beads</span>
             </div>
-            <div className="flex items-center gap-2 text-sm sm:text-base">
+            <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5" />
               <span>Energized by Rituals</span>
             </div>
           </div>
+        </motion.div>
+
+        {/* Authenticity badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="mt-10 inline-block bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-2 rounded-full font-semibold shadow-lg"
+        >
+          Shivyantra Authenticity Promise
         </motion.div>
       </div>
     </section>
   );
 };
 
-export default AboutRudraksha;
+export default AboutRudrakshaModern;

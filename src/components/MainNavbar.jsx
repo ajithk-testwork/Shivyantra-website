@@ -98,7 +98,6 @@ const MainNavbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-md sticky top-0 z-[1000] border-b border-amber-100">
-      {/* 🔶 Top Section */}
       <div className="flex justify-between items-center bg-amber-600 px-6 py-4 relative">
         <Link
           to="/"
@@ -127,7 +126,6 @@ const MainNavbar = () => {
         </button>
       </div>
 
-      {/* 📱 Mobile Nav */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -151,7 +149,6 @@ const MainNavbar = () => {
         )}
       </AnimatePresence>
 
-      {/* 🔍 Search + User Controls */}
       <div className="flex   md:flex-row items-center justify-between px-6 py-3 gap-3 md:gap-0">
         <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-700">
           <PhoneCall className="w-4 h-4 text-amber-700" />
@@ -234,7 +231,6 @@ const MainNavbar = () => {
         </div>
       </div>
 
-      {/* ✅ Logout Popup */}
       <AnimatePresence>
         {showLogoutPopup && (
           <motion.div
@@ -259,7 +255,6 @@ const MainNavbar = () => {
         )}
       </AnimatePresence>
 
-      {/* 🧩 Auth Modal */}
       {showAuth && (
         <AuthModal
           onClose={() => setShowAuth(false)}

@@ -53,15 +53,23 @@ const collections = [
     ],
     icon: <Sparkles className="w-6 h-6 text-amber-600" />,
   },
+  {
+    id: 6,
+    title: "Spiritual Decor",
+    desc: "Art that channels divine energy into your living spaces.",
+    images: [
+      "https://images.unsplash.com/photo-1616628522339-fd6a6f223b22?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1582719478133-eaa9b1a14b09?auto=format&fit=crop&w=1200&q=80",
+    ],
+    icon: <Sparkles className="w-6 h-6 text-amber-600" />,
+  },
 ];
 
 const Collection = () => {
   return (
-    <section className="relative py-24 bg-gradient-to-b from-amber-50 via-[#FFFDF8] to-amber-100 overflow-hidden">
-      {/* Ambient Glow */}
+    <section className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,215,128,0.15)_0%,transparent_70%)] pointer-events-none"></div>
 
-      {/* Header */}
       <div className="text-center relative mb-20 px-4">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -84,7 +92,6 @@ const Collection = () => {
         <div className="mt-4 w-28 h-[2px] bg-amber-700 mx-auto"></div>
       </div>
 
-      {/* Collection Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6">
         {collections.map((item, index) => (
           <motion.div
@@ -95,7 +102,6 @@ const Collection = () => {
             transition={{ duration: 0.7, delay: index * 0.12 }}
             className="relative group overflow-hidden rounded-3xl shadow-lg border border-amber-200 hover:border-amber-600 transition-all duration-500"
           >
-            {/* Dual Image Container */}
             <div className="relative w-full h-80 overflow-hidden">
               <motion.img
                 src={item.images[0]}
@@ -110,7 +116,6 @@ const Collection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-70 group-hover:opacity-60 transition-all duration-500"></div>
             </div>
 
-            {/* Overlay Content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
               <div className="bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl shadow-lg border border-amber-300">
                 <div className="flex justify-center mb-2">{item.icon}</div>
@@ -121,7 +126,6 @@ const Collection = () => {
               </div>
             </div>
 
-            {/* Outer Glow Accent */}
             <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl bg-gradient-to-r from-amber-400/40 via-orange-200/40 to-yellow-100/40 pointer-events-none"></div>
           </motion.div>
         ))}

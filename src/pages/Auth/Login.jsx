@@ -136,7 +136,7 @@ const Login = ({ onClose, onSuccess, onSwitch }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-700 text-white py-2 rounded-lg font-semibold hover:bg-amber-800 disabled:opacity-60"
+            className="w-full bg-gradient-to-r from-amber-700 to-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-500 disabled:opacity-60"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

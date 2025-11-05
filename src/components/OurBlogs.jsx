@@ -65,11 +65,9 @@ const OurBlogs = () => {
   }, [controls]);
 
   return (
-    <section className="relative py-20 bg-gradient-to-b from-[#FFFDF5] via-amber-50 to-[#FFFDF8] overflow-hidden">
-      {/* Soft Glow Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,200,110,0.12)_0%,transparent_70%)] pointer-events-none" />
+    <section className="relative py-20  overflow-hidden">
+      
 
-      {/* Header */}
       <div className="text-center mb-12 px-4 relative">
         <h2 className="text-4xl sm:text-5xl font-serif text-[#5a3e1b] tracking-wide">
           Shivyantra <span className="text-[#a36f1f]">Sacred Insights</span>
@@ -80,7 +78,6 @@ const OurBlogs = () => {
         <div className="w-24 h-[2px] bg-amber-700 mx-auto mt-3 rounded-full"></div>
       </div>
 
-      {/* Auto Slider */}
       <div className="max-w-7xl mx-auto overflow-hidden relative">
         <motion.div
           animate={controls}
@@ -92,7 +89,6 @@ const OurBlogs = () => {
               className="relative min-w-[250px] sm:min-w-[280px] bg-white/80 border border-amber-100 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden group backdrop-blur-md"
               whileHover={{ scale: 1.05 }}
             >
-              {/* Image */}
               <div className="relative h-40 overflow-hidden">
                 <img
                   src={blog.image}
@@ -105,7 +101,6 @@ const OurBlogs = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-70 group-hover:opacity-50 transition-all duration-500"></div>
               </div>
 
-              {/* Content */}
               <div className="p-4 relative z-10">
                 <h3 className="text-[15px] font-serif font-semibold text-amber-900 mb-1 group-hover:text-amber-700 transition line-clamp-2">
                   {blog.title}
@@ -116,15 +111,13 @@ const OurBlogs = () => {
                
               </div>
 
-              {/* Glow Accent */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-amber-300/20 via-orange-200/20 to-yellow-100/20 blur-xl transition-all duration-700 pointer-events-none"></div>
             </motion.div>
           ))}
         </motion.div>
       </div>
 
-      {/* Fade Effect Bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#FFFDF5] to-transparent"></div>
+      
     </section>
   );
 };

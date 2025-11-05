@@ -20,6 +20,7 @@ import ShippingPolicy from "./pages/Insights/ShippingPolicy";
 import CancellationPolicy from "./pages/Insights/CancellationPolicy";
 import StrategicVision from "./pages/Insights/StrategicVision";
 import Login from "./pages/Auth/Login";
+import OfferPopup from "./components/OfferPopup";
 
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
   return (
     <Router>
       <MainNavbar />
-
+      <OfferPopup/>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Home />} />

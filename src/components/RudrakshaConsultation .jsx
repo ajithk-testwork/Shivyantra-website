@@ -12,15 +12,12 @@ const RudrakshaConsultation = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Overlay for depth and sacred glow */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-amber-950/40 to-black/60"></div>
       <div className="absolute inset-0 backdrop-blur-[1px]"></div>
 
-      {/* Decorative Borders */}
       <div className="absolute top-10 left-10 w-16 h-16 border-t-2 border-l-2 border-amber-400 rounded-tl-3xl"></div>
       <div className="absolute bottom-10 right-10 w-16 h-16 border-b-2 border-r-2 border-amber-400 rounded-br-3xl"></div>
 
-      {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}

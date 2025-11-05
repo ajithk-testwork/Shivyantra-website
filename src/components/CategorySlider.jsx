@@ -1,56 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Star, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
+ import image1 from "../assets/Category/img1.jpg";
+ import image2 from "../assets/Category/img2.jpg";
+ import image3 from "../assets/Category/img3.jpg";
+ import image4 from "../assets/Category/img4.jpg";
+ import image5 from "../assets/Category/img5.jpg";
+ import image6 from "../assets/Category/img6.jpg";
 
 const CategorySlider = () => {
   const products = [
     {
       id: 1,
-      name: "Classic Hoodie",
-      price: "₹1,299",
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-      rating: 4.5,
+      name: "mukhi Rudraksha",
+      image: image1,
     },
     {
       id: 2,
-      name: "Casual T-Shirt",
-      price: "₹799",
-      image:
-        "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80",
-      rating: 4.2,
+      name: "Rudraksha Bead Wrist Mala",
+      image: image2,
     },
     {
       id: 3,
-      name: "Denim Jacket",
-      price: "₹2,199",
-      image:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-      rating: 4.8,
+      name: "Sphatik Mala",
+      image: image3,
     },
     {
       id: 4,
-      name: "Sports Shoes",
-      price: "₹2,499",
-      image:
-        "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80",
-      rating: 4.6,
+      name: "Meditation and spiritual focus",
+      image: image4,
     },
     {
       id: 5,
-      name: "Stylish Backpack",
-      price: "₹999",
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-      rating: 4.3,
+      name: "Crystal Japa Mala",
+      image: image5,
     },
     {
       id: 6,
-      name: "Trendy Sunglasses",
-      price: "₹699",
-      image:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-      rating: 4.1,
+      name: "Energized Isha Gauri",
+      image: image6,
     },
   ];
 
@@ -77,7 +65,7 @@ const CategorySlider = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-amber-50 to-white py-16 px-4 sm:px-10 relative overflow-hidden">
+    <div className="w-full py-16 px-4 sm:px-10 relative overflow-hidden">
       <div className="text-center justify-center">
         <h2 className="text-4xl sm:text-5xl font-serif text-[#5a3e1b] tracking-wide">
           The Essence of <span className="text-[#a36f1f]">Shivyantra Category</span>

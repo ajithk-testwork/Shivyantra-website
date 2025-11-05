@@ -18,7 +18,6 @@ const Profile = () => {
         transition={{ duration: 0.6 }}
         className="w-full max-w-2xl bg-white rounded-3xl shadow-xl border border-amber-200 p-10"
       >
-        {/* Header */}
         <div className="text-center mb-10">
           <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-amber-500 to-orange-400 flex items-center justify-center shadow-lg">
             <User className="w-10 h-10 text-white" />
@@ -27,7 +26,6 @@ const Profile = () => {
           <p className="text-gray-500 mt-1">Manage your account and orders</p>
         </div>
 
-        {/* Profile Info */}
         <div className="space-y-6">
           <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
             <User className="w-6 h-6 text-amber-600" />
@@ -50,10 +48,8 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="my-8 border-t border-amber-200" />
 
-        {/* Order History */}
         <div>
           <h2 className="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
             <ShoppingBag className="w-5 h-5" /> Order History
@@ -64,7 +60,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="mt-10 text-center">
           <button
             className="px-6 py-2 rounded-full bg-gradient-to-r from-amber-600 to-orange-500 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"

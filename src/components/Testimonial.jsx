@@ -1,6 +1,11 @@
+// src/components/TestimonialSplit.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Quote, Sparkles } from "lucide-react";
+import { Quote } from "lucide-react";
+import image1 from "../assets/ReviewPeople/img1.jpg";
+import image2 from "../assets/ReviewPeople/img2.jpg";
+import image3 from "../assets/ReviewPeople/img3.jpg";
+import bgPattern from "../assets/ReviewPeople/bgImg.jpg"; 
 
 const testimonials = [
   {
@@ -9,8 +14,7 @@ const testimonials = [
     role: "Spiritual Seeker, Delhi",
     message:
       "The Rudraksha I received from Shivyantra brought divine calm and clarity. A sacred experience that truly changed my aura.",
-    image:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=150&q=80",
+    image: image1,
   },
   {
     id: 2,
@@ -18,8 +22,7 @@ const testimonials = [
     role: "Yoga Instructor, Kerala",
     message:
       "The consultation guided me to the perfect Rudraksha for my spiritual path. I feel more balanced, focused, and peaceful.",
-    image:
-      "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?auto=format&fit=crop&w=150&q=80",
+    image: image2,
   },
   {
     id: 3,
@@ -27,8 +30,7 @@ const testimonials = [
     role: "Business Owner, Mumbai",
     message:
       "Authentic products and divine service! I can truly feel the sacred energy radiating through the Rudraksha I received.",
-    image:
-      "https://images.unsplash.com/photo-1614289371518-919c7d213b64?auto=format&fit=crop&w=150&q=80",
+    image: image3,
   },
 ];
 
@@ -36,65 +38,36 @@ const Testimonial = () => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
-  useEffect(() => {
-    const timer = setInterval(() => nextSlide(), 7000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const nextSlide = () => {
+  const next = () => {
     setDirection(1);
     setIndex((prev) => (prev + 1) % testimonials.length);
   };
-
-  const prevSlide = () => {
+  const prev = () => {
     setDirection(-1);
-    setIndex((prev) =>
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    );
+    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
   };
 
+  useEffect(() => {
+    const t = setInterval(next, 7000);
+    return () => clearInterval(t);
+  }, []);
+
   const variants = {
-    enter: (direction) => ({
-      opacity: 0,
-      x: direction > 0 ? 100 : -100,
-      scale: 0.95,
-    }),
-    center: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      zIndex: 1,
-    },
-    exit: (direction) => ({
-      opacity: 0,
-      x: direction < 0 ? 100 : -100,
-      scale: 0.95,
-      zIndex: 0,
-    }),
+    enter: (dir) => ({ x: dir > 0 ? 100 : -100, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir) => ({ x: dir < 0 ? 100 : -100, opacity: 0 }),
   };
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-[#fbf8f3] via-[#f6f0e4] to-[#f0e5cf] overflow-hidden">
-      {/* Sacred Golden Aura */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(197,155,64,0.25),transparent_70%)]"></div>
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,rgba(249,225,157,0.25),transparent_70%)]"></div>
-
-      {/* Header */}
-      <div className="text-center mb-16 relative">
-        <div className="flex justify-center mb-3">
-          <Sparkles className="text-[#b78a28] w-8 h-8" />
-        </div>
-        <h2 className="text-4xl sm:text-5xl font-serif text-[#5a3e1b]">
-          Voices of Devotion
-        </h2>
-        <p className="text-[#85673c] mt-2 italic">
-          Blessed experiences from our divine community
+    <section className="relative py-24  overflow-hidden bg-spiritual">
+      <div className="text-center mb-16">
+        <h2 className="text-5xl font-serif text-[#5a3e1b]">Voices of Faith</h2>
+        <p className="text-[#8a6f40] italic mt-2">
+          Real stories from spiritual souls
         </p>
-        <div className="w-24 h-[2px] bg-[#b78a28] mx-auto mt-4 rounded-full"></div>
       </div>
 
-      {/* Testimonial Card */}
-      <div className="relative max-w-3xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto relative px-6">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={testimonials[index].id}
@@ -103,61 +76,58 @@ const Testimonial = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{
-              duration: 0.8,
-              ease: "easeInOut",
-            }}
-            className="relative bg-[#fffdf7]/80 backdrop-blur-md border border-[#e3d4b0] rounded-3xl shadow-[0_8px_25px_rgba(182,143,46,0.15)] px-10 py-12"
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="grid md:grid-cols-2 gap-10 items-center bg-white rounded-3xl shadow-[0_10px_30px_rgba(183,138,40,0.15)] overflow-hidden border border-[#e8dbb0]"
           >
-            <Quote className="w-10 h-10 text-[#b78a28] mx-auto mb-6 opacity-80" />
-            <motion.img
-              src={testimonials[index].image}
-              alt={testimonials[index].name}
-              className="w-20 h-20 rounded-full object-cover border-4 border-[#b78a28] mx-auto mb-6 shadow-lg"
-              whileHover={{ scale: 1.05 }}
-            />
-            <p className="text-[#5b4724] italic text-lg leading-relaxed mb-6">
-              “{testimonials[index].message}”
-            </p>
-            <h4 className="text-[#4c3616] font-semibold text-lg">
-              {testimonials[index].name}
-            </h4>
-            <p className="text-[#8a6f40] text-sm">
-              {testimonials[index].role}
-            </p>
+            <div
+              className="hidden md:block h-full bg-cover bg-center md:rounded-l-3xl"
+              style={{
+                backgroundImage: `url(${bgPattern})`,
+                backgroundBlendMode: "multiply",
+              }}
+            >
+              <div className="w-full h-full bg-gradient-to-tr from-[#b78a28]/0 to-transparent"></div>
+            </div>
+
+            <div className="p-10 text-center md:text-left">
+              <Quote className="w-10 h-10 text-[#b78a28] mx-auto md:mx-0 mb-6 opacity-80" />
+              <p className="text-[#5b4724] italic text-lg leading-relaxed mb-8">
+                “{testimonials[index].message}”
+              </p>
+
+              <div className="flex flex-col md:flex-row md:items-center gap-4">
+                <img
+                  src={testimonials[index].image}
+                  alt={testimonials[index].name}
+                  className="w-16 h-16 rounded-full border-4 border-[#b78a28] object-cover shadow-md mx-auto md:mx-0"
+                />
+                <div className="text-center md:text-left">
+                  <h4 className="text-[#4c3616] font-semibold text-lg">
+                    {testimonials[index].name}
+                  </h4>
+                  <p className="text-[#8a6f40] text-sm">
+                    {testimonials[index].role}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-center md:justify-start gap-4 mt-8">
+                <button
+                  onClick={prev}
+                  className="px-4 py-2 rounded-full bg-[#b78a28]/20 hover:bg-[#b78a28]/40 text-[#4c3b1f] transition"
+                >
+                  ❮
+                </button>
+                <button
+                  onClick={next}
+                  className="px-4 py-2 rounded-full bg-[#b78a28]/20 hover:bg-[#b78a28]/40 text-[#4c3b1f] transition"
+                >
+                  ❯
+                </button>
+              </div>
+            </div>
           </motion.div>
         </AnimatePresence>
-
-        {/* Navigation Arrows */}
-        <div className="flex justify-between absolute inset-x-0 top-1/2 -translate-y-1/2 px-3 sm:px-6">
-          <button
-            onClick={prevSlide}
-            className="bg-[#b78a28]/20 hover:bg-[#b78a28]/40 text-[#4c3b1f] p-2 rounded-full shadow-md transition"
-          >
-            ❮
-          </button>
-          <button
-            onClick={nextSlide}
-            className="bg-[#b78a28]/20 hover:bg-[#b78a28]/40 text-[#4c3b1f] p-2 rounded-full shadow-md transition"
-          >
-            ❯
-          </button>
-        </div>
-
-        {/* Dots */}
-        <div className="flex justify-center mt-8 gap-2">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                i === index
-                  ? "bg-[#b78a28] scale-125"
-                  : "bg-[#d9c69c] hover:bg-[#b78a28]/70"
-              }`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );

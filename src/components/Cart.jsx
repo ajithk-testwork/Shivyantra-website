@@ -4,7 +4,6 @@ import { Trash2, ArrowLeft } from "lucide-react";
 const Cart = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-8">
-      {/* Header */}
       <div className="max-w-6xl mx-auto mb-10 flex items-center gap-3">
         <button className="flex items-center text-amber-600 hover:text-amber-700">
           <ArrowLeft className="w-5 h-5 mr-2" />
@@ -12,9 +11,7 @@ const Cart = () => {
         </button>
       </div>
 
-      {/* Main Layout */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left: Cart Items */}
         <div className="lg:col-span-2 bg-white shadow-sm rounded-2xl p-6">
           <h2 className="text-2xl font-semibold border-b pb-4 mb-6">Your Cart</h2>
 

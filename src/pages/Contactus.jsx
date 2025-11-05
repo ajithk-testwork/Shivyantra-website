@@ -5,12 +5,11 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 const Contact = () => {
 
   useEffect(() => {
-          window.scrollTo(0, 0);
-        }, []);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-amber-50 text-gray-800 py-20 px-6 md:px-20">
-      {/* Heading */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -30,9 +29,7 @@ const Contact = () => {
         </p>
       </motion.div>
 
-      {/* Main Content */}
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start">
-        {/* Left Section – Info */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -91,7 +88,6 @@ const Contact = () => {
           </div>
         </motion.div>
 
-        {/* Right Section – Form */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -147,31 +143,30 @@ const Contact = () => {
           </form>
         </motion.div>
       </div>
-      {/* Google Map Section */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.8 }}
-  viewport={{ once: true }}
-  className="mt-16"
->
-  <h3 className="text-2xl font-semibold text-center text-yellow-800 mb-6">
-    Find Us on Google Maps
-  </h3>
-  <div className="w-full h-[400px] rounded-2xl overflow-hidden shadow-lg border border-amber-200">
-    <iframe
-      title="Shivyantra Location"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.7602734542515!2d80.21260767381165!3d13.050925513136693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5267f622160271%3A0x3149fc03560d447!2sJGN%20Technologies!5e0!3m2!1sen!2sin!4v1761630425535!5m2!1sen!2sin" 
-       referrerpolicy="no-referrer-when-downgrade"
-      width="100%"
-      height="100%"
-      style={{ border: 0 }}
-      allowFullScreen=""
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-    ></iframe>
-  </div>
-</motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="mt-16"
+      >
+        <h3 className="text-2xl font-semibold text-center text-yellow-800 mb-6">
+          Find Us on Google Maps
+        </h3>
+        <div className="w-full h-[400px] rounded-2xl overflow-hidden shadow-lg border border-amber-200">
+          <iframe
+            title="Shivyantra Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.7602734542515!2d80.21260767381165!3d13.050925513136693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5267f622160271%3A0x3149fc03560d447!2sJGN%20Technologies!5e0!3m2!1sen!2sin!4v1761630425535!5m2!1sen!2sin"
+            referrerpolicy="no-referrer-when-downgrade"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </motion.div>
 
     </section>
   );

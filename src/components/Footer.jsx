@@ -12,7 +12,6 @@ const Footer = () => {
   return (
     <footer className="bg-amber-600 text-amber-50 py-14 px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-        {/* Brand Info */}
         <div>
           <h2 className="text-3xl font-bold text-white mb-5 tracking-wide">
             Shivyantra
@@ -26,7 +25,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Insights */}
         <div>
           <h3 className="text-xl font-semibold text-white mb-4">Insights</h3>
           <ul className="space-y-2 text-base">
@@ -49,7 +47,6 @@ const Footer = () => {
 
         </div>
 
-        {/* Quick Links */}
         <div>
           <h3 className="text-xl font-semibold text-white mb-4">
             Quick Links
@@ -68,7 +65,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Contact & Social */}
         <div>
           <h3 className="text-xl font-semibold text-white mb-4">Contact Us</h3>
           <ul className="space-y-3 text-base">
@@ -82,7 +78,6 @@ const Footer = () => {
             </li>
           </ul>
 
-          {/* 🌐 Social Media Icons */}
           <div className="flex gap-4 mt-6">
             <a
               href="https://facebook.com"
@@ -120,10 +115,8 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Divider */}
       <div className="border-t border-amber-700 mt-10"></div>
 
-      {/* Bottom Section */}
       <div className="text-center py-5 text-sm md:text-base text-amber-100">
         <p>
           © 2024 Copyright :{" "}
