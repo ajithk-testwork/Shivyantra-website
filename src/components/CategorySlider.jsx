@@ -1,68 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Star, ShoppingBag } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
- import image1 from "../assets/Category/img1.jpg";
- import image2 from "../assets/Category/img2.jpg";
- import image3 from "../assets/Category/img3.jpg";
- import image4 from "../assets/Category/img4.jpg";
- import image5 from "../assets/Category/img5.jpg";
- import image6 from "../assets/Category/img6.jpg";
+import { useNavigate } from "react-router-dom";
+import api from "../Utilis/api";
 
 const CategorySlider = () => {
-  const products = [
-    {
-      id: 1,
-      name: "mukhi Rudraksha",
-      image: image1,
-    },
-    {
-      id: 2,
-      name: "Rudraksha Bead Wrist Mala",
-      image: image2,
-    },
-    {
-      id: 3,
-      name: "Sphatik Mala",
-      image: image3,
-    },
-    {
-      id: 4,
-      name: "Meditation and spiritual focus",
-      image: image4,
-    },
-    {
-      id: 5,
-      name: "Crystal Japa Mala",
-      image: image5,
-    },
-    {
-      id: 6,
-      name: "Energized Isha Gauri",
-      image: image6,
-    },
-  ];
-
+  const [categories, setCategories] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // Auto-slide every 4 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 4000);
+    const fetchCategories = async () => {
+      try {
+        const res = await api.get("/categories?populate=*");
+        setCategories(res.data.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => nextSlide(), 4000);
     return () => clearInterval(interval);
   });
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === products.length - 3 ? 0 : prev + 1
-    );
+  const nextSlide = () => setCurrentIndex((prev) => (prev === categories.length - 3 ? 0 : prev + 1));
+  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? categories.length - 3 : prev - 1));
+
+  const handleCategoryClick = (name) => {
+    navigate(`/shop?category=${encodeURIComponent(name)}`);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? products.length - 3 : prev - 1
-    );
-  };
+  if (loading)
+    return <div className="text-center py-20 text-lg text-gray-600">Loading Categories...</div>;
 
   return (
     <div className="w-full py-16 px-4 sm:px-10 relative overflow-hidden">
@@ -76,7 +51,7 @@ const CategorySlider = () => {
         <div className="mt-3 w-28 h-[2px] bg-amber-700 mx-auto"></div>
       </div>
 
-      <div className="relative   max-w-6xl mx-auto">
+      <div className="relative max-w-6xl mx-auto">
         <button
           onClick={prevSlide}
           className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 hover:bg-amber-100 z-10 transition"
@@ -88,32 +63,34 @@ const CategorySlider = () => {
           className="flex gap-6 py-14 transition-transform duration-700 ease-in-out"
           animate={{ x: -currentIndex * 320 }}
         >
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="relative mt-10 min-w-[300px] bg-gradient-to-br from-amber-50 via-white to-orange-50 rounded-3xl shadow-lg hover:shadow-2xl border border-amber-200 group overflow-visible transform hover:-rotate-2 transition duration-500"
-            >
-              <div className="relative -top-10 mx-auto w-40 h-40 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
-                />
+          {categories.map((cate, i) => {
+            const imageUrl =
+              cate?.CategoryImage?.[0]?.url ||
+              cate?.CategoryImage?.[0]?.formats?.thumbnail?.url;
+            const categoryName = cate?.Name || "Unnamed Category";
+
+            return (
+              <div
+                key={i}
+                onClick={() => handleCategoryClick(categoryName)}
+                className="cursor-pointer relative mt-10 min-w-[300px] bg-gradient-to-br from-amber-50 via-white to-orange-50 rounded-3xl shadow-lg hover:shadow-2xl border border-amber-200 group overflow-visible transform hover:-rotate-2 transition duration-500"
+              >
+                <div className="relative -top-10 mx-auto w-40 h-40 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+                  <img
+                    src={imageUrl}
+                    alt={categoryName}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
+                  />
+                </div>
+                <div className="p-6 pt-2 text-center space-y-2">
+                  <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+                    {categoryName}
+                  </h3>
+                </div>
               </div>
-
-              <div className="p-6 pt-2 text-center space-y-2">
-                <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
-                  {product.name}
-                </h3>
-
-
-              </div>
-
-              <div className="absolute inset-0 bg-gradient-to-t from-amber-200/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-500"></div>
-            </div>
-          ))}
+            );
+          })}
         </motion.div>
-
 
         <button
           onClick={nextSlide}
@@ -121,19 +98,6 @@ const CategorySlider = () => {
         >
           <ChevronRight className="text-amber-700" />
         </button>
-      </div>
-
-      <div className="flex justify-center mt-8 gap-2">
-        {[...Array(products.length - 2)].map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentIndex(i)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === i
-              ? "bg-amber-600 scale-110"
-              : "bg-gray-300 hover:bg-amber-400"
-              }`}
-          ></button>
-        ))}
       </div>
     </div>
   );

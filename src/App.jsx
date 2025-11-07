@@ -21,6 +21,7 @@ import CancellationPolicy from "./pages/Insights/CancellationPolicy";
 import StrategicVision from "./pages/Insights/StrategicVision";
 import Login from "./pages/Auth/Login";
 import OfferPopup from "./components/OfferPopup";
+import ProductDetails from "./components/ProductDetails ";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path="/shipping-policy" element={<ShippingPolicy />}/>
        <Route path="/cancellation-policy" element={<CancellationPolicy />} />
         <Route path="/strategic-vision" element={<StrategicVision />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Routes>
       <Footer/>
     </Router>

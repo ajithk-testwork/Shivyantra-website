@@ -15,7 +15,7 @@ import BannerImg from "../components/BannerImg";
 const Home = () => {
 
   return (
-    <>
+    <div className="bg-gradient-to-b from-orange-50 via-white to-amber-50">
       <HomeSlider  />
       <CategorySlider/>
       <AboutRudraksha/>
@@ -26,7 +26,7 @@ const Home = () => {
       <BannerImg/>
       <FAQSection/>
       <Testimonial/>
-    </>
+    </div>
   );
 };
 

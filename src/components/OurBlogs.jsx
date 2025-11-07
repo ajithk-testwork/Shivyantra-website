@@ -56,7 +56,7 @@ const OurBlogs = () => {
       while (true) {
         await controls.start({
           x: ["-50%", "0%"],
-          transition: { duration: 45, ease: "linear" },
+          transition: { duration: 15, ease: "linear" },
         });
         await controls.start({ x: "0%" });
       }

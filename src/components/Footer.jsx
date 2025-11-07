@@ -51,18 +51,24 @@ const Footer = () => {
           <h3 className="text-xl font-semibold text-white mb-4">
             Quick Links
           </h3>
-          <ul className="space-y-2 text-base">
-            {["Home", "Shop", "About", "Blog", "Contact"].map((item, index) => (
-              <li key={index}>
-                <Link
-                  to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="block px-3 py-1 rounded-lg hover:bg-white hover:text-black transition-all duration-300"
-                >
-                  {item}
-                </Link>
-              </li>
-            ))}
-          </ul>
+         <ul className="space-y-2 text-base">
+  {["Home", "Shop", "About", "Blog", "Contact"].map((item, index) => (
+    <li key={index}>
+      <Link
+        to={
+          item === "Home"
+            ? "/" // ✅ Go to homepage
+            : `/${item.toLowerCase().replace(/\s+/g, "-")}`
+        }
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="block px-3 py-1 rounded-lg hover:bg-white hover:text-black transition-all duration-300"
+      >
+        {item}
+      </Link>
+    </li>
+  ))}
+</ul>
+
         </div>
 
         <div>

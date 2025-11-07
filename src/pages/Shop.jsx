@@ -1,270 +1,378 @@
-import React, { useState, useEffect } from "react";
-import { ChevronDown, ArrowLeft, Star, Search, Heart } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ChevronDown, ChevronUp, X, SlidersHorizontal } from "lucide-react";
+import api from "../Utilis/api";
 import image from "../assets/About.webp";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Shop = () => {
-  const [selectedSort, setSelectedSort] = useState("Default");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [favorites, setFavorites] = useState(new Set());
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [sortOption, setSortOption] = useState("default");
+  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [loading, setLoading] = useState(true);
 
-  const sortOptions = [
-    "Default",
-    "Price: Low to High",
-    "Price: High to Low",
-    "Alphabetically, A-Z",
-    "Alphabetically, Z-A",
-    "Latest",
-  ];
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const queryParams = new URLSearchParams(location.search);
+  const categoryParam = queryParams.get("category");
+  const subcategoryParam = queryParams.get("subcategory");
+
+  // 🟤 Fetch categories and products
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const { data } = await api.get(
+          "/categories?populate[products][populate]=ProductImage&populate[subcategories][populate][products][populate]=ProductImage"
+        );
 
-  const sampleProducts = Array.from({ length: 12 }, (_, i) => ({
-    id: i,
-    name: `Sacred Rudraksha Mala ${i + 1}`,
-    description: "Handcrafted with divine energy and traditional wisdom.",
-    image: `https://images.unsplash.com/photo-1594736797933-d0401ba94693?w=400&h=400&fit=crop&auto=format`,
-    price: `₹${(i + 1) * 499 + 99}`,
-    rating: (4 + Math.random()).toFixed(1),
-    isNew: i % 4 === 0,
-  }));
+        const categoriesData = data.data || [];
+        setCategories(categoriesData);
 
-  const toggleFavorite = (productId) => {
-    setFavorites((prev) => {
-      const newFavs = new Set(prev);
-      newFavs.has(productId) ? newFavs.delete(productId) : newFavs.add(productId);
-      return newFavs;
+        let filteredProducts = [];
+
+        // Subcategory selected
+        if (subcategoryParam) {
+          const foundCategory = categoriesData.find((cat) =>
+            cat.subcategories?.some(
+              (sub) =>
+                sub.text?.toLowerCase() === subcategoryParam.toLowerCase()
+            )
+          );
+          if (foundCategory) {
+            const sub = foundCategory.subcategories.find(
+              (s) =>
+                s.text?.toLowerCase() === subcategoryParam.toLowerCase()
+            );
+            setSelectedCategory(foundCategory);
+            setSelectedSubcategory(sub);
+            filteredProducts =
+              sub?.products?.map((p) => ({
+                id: p.id,
+                name: p.ProductName,
+                price: parseFloat(p.Price) || 0,
+                image:
+                  p?.ProductImage?.[0]?.url ||
+                  "https://via.placeholder.com/300x300?text=No+Image",
+              })) || [];
+          }
+        }
+        // Category selected
+        else if (categoryParam) {
+          const foundCategory = categoriesData.find(
+            (cat) => cat.Name?.toLowerCase() === categoryParam.toLowerCase()
+          );
+          if (foundCategory) {
+            setSelectedCategory(foundCategory);
+            setSelectedSubcategory(null);
+            filteredProducts =
+              foundCategory.products?.map((p) => ({
+                id: p.id,
+                name: p.ProductName,
+                price: parseFloat(p.Price) || 0,
+                image:
+                  p?.ProductImage?.[0]?.url ||
+                  "https://via.placeholder.com/300x300?text=No+Image",
+              })) || [];
+          }
+        }
+        // All products
+        else {
+          filteredProducts = categoriesData.flatMap(
+            (cat) =>
+              cat.products?.map((p) => ({
+                id: p.id,
+                name: p.ProductName,
+                price: parseFloat(p.Price) || 0,
+                image:
+                  p?.ProductImage?.[0]?.url ||
+                  "https://via.placeholder.com/300x300?text=No+Image",
+              })) || []
+          );
+        }
+
+        setProducts(filteredProducts);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [categoryParam, subcategoryParam]);
+
+  // 🟠 Sort + Filter
+  const filteredAndSortedProducts = products
+    .filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1])
+    .sort((a, b) => {
+      if (sortOption === "price_low_high") return a.price - b.price;
+      if (sortOption === "price_high_low") return b.price - a.price;
+      if (sortOption === "name_asc") return a.name.localeCompare(b.name);
+      return 0;
     });
-  };
 
-  const filterSections = [
-    {
-      title: "CATEGORY",
-      items: ["Rudraksha Mala", "Gemstones", "Bracelets", "Yantras", "Incense", "Meditation Tools"],
-    },
-    {
-      title: "PRICE RANGE",
-      items: ["Under ₹500", "₹500 – ₹2000", "₹2000 – ₹5000", "₹5000 – ₹10000", "Above ₹10000"],
-    },
-  ];
+  if (loading)
+    return (
+      <div className="text-center py-20 text-lg text-gray-600">
+        Loading Divine Products...
+      </div>
+    );
 
   return (
-    <div className="min-h-screen bg-amber-50">
-      {/* Header */}
-      <motion.header
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className={`fixed top-0 w-full z-50 ${
-          isScrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#fffaf3] to-[#fdf5e6]">
+      {/* 🟡 Hero Banner */}
+      <div className="relative h-72 w-full overflow-hidden">
+        <img
+          src={image}
+          alt="Divine Collection"
+          className="absolute inset-0 w-full h-full object-cover brightness-75"
+        />
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative z-10 flex flex-col justify-center items-center h-full text-white text-center">
+          <h1 className="text-4xl font-serif tracking-wide drop-shadow-lg">
+            {selectedSubcategory?.text ||
+              selectedCategory?.Name ||
+              "Divine Collection"}
+          </h1>
+          <p className="italic text-lg mt-2 opacity-90">
+            Explore sacred beauty and divine energy
+          </p>
+          <div className="w-24 h-[2px] bg-amber-400 mt-3"></div>
+        </div>
+      </div>
+
+      {/* 🧱 Main Layout */}
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row py-14 px-6 gap-10">
+        {/* Sidebar */}
+        <aside className="lg:w-1/4 bg-white rounded-2xl shadow-md border border-amber-100 p-6 h-fit">
+          {/* 🔙 Back to Home */}
           <button
-            onClick={() => window.history.back()}
-            className="flex items-center gap-2 text-amber-800 hover:text-amber-900"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 cursor-pointer text-amber-700 hover:text-amber-800 mb-5 font-medium transition-all duration-300"
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="font-serif font-semibold text-lg">Back</span>
+            <span className="text-lg">←</span>
+            <span className="text-sm tracking-wide">Back to Home</span>
           </button>
 
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="hidden md:flex items-center bg-white border border-amber-200 rounded-full px-4 py-2"
-          >
-            <Search className="w-4 h-4 text-amber-600 mr-2" />
-            <input
-              type="text"
-              placeholder="Search sacred items..."
-              className="bg-transparent outline-none text-sm text-amber-900"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </motion.div>
+          <h3 className="text-xl font-semibold text-amber-800 mb-4 border-b pb-2 flex items-center gap-2">
+            <SlidersHorizontal className="text-amber-600" />
+            Filters
+          </h3>
 
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-sm text-amber-800"
-          >
-            {favorites.size} ❤️ Loved
-          </motion.div>
-        </div>
-      </motion.header>
-
-      {/* Hero Section */}
-      <motion.section
-        className="h-80 bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: `url(${image})` }}
-        initial={{ opacity: 0, scale: 1.05 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <motion.div
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="bg-black/50 p-8 rounded-xl text-center"
-        >
-          <h1 className="text-white font-serif text-4xl md:text-5xl font-bold mb-2">
-            Divine Collection
-          </h1>
-          <p className="text-white/80 text-lg">
-            Explore sacred items that inspire peace and positivity
-          </p>
-        </motion.div>
-      </motion.section>
-
-      {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-10">
-        {/* Sidebar */}
-        <motion.aside
-          initial={{ x: -50, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="lg:w-72 bg-white border border-amber-200 rounded-2xl shadow-sm p-6 h-fit"
-        >
-          <h2 className="font-serif text-xl text-amber-900 mb-6">Filters</h2>
-          {filterSections.map((section) => (
-            <div key={section.title} className="mb-8">
-              <h3 className="text-sm font-semibold text-amber-800 mb-3 border-b border-amber-200 pb-1">
-                {section.title}
-              </h3>
-              <ul className="space-y-2">
-                {section.items.map((item) => (
-                  <li key={item} className="flex items-center text-sm text-amber-800">
-                    <input type="checkbox" className="w-4 h-4 text-amber-600 mr-3" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+          {/* Price Range */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-gray-800 mb-2">Price Range</h4>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                value={priceRange[0]}
+                min="0"
+                max="10000"
+                onChange={(e) =>
+                  setPriceRange([Number(e.target.value), priceRange[1]])
+                }
+                className="w-20 border border-gray-200 rounded-md px-2 py-1 text-sm"
+              />
+              <span className="text-gray-500">to</span>
+              <input
+                type="number"
+                value={priceRange[1]}
+                min="0"
+                max="10000"
+                onChange={(e) =>
+                  setPriceRange([priceRange[0], Number(e.target.value)])
+                }
+                className="w-20 border cursor-pointer border-gray-200 rounded-md px-2 py-1 text-sm"
+              />
             </div>
-          ))}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full bg-amber-600 text-white font-semibold py-2 rounded-lg hover:bg-amber-700 transition"
-          >
-            Apply Filters
-          </motion.button>
-        </motion.aside>
-
-        {/* Product Grid */}
-        <div className="flex-1">
-          <div className="flex justify-between items-center mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="font-serif text-3xl text-amber-900 font-bold">Divine Collection</h2>
-              <p className="text-sm text-amber-700/70">
-                {sampleProducts.length} sacred items available
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center bg-white border border-amber-200 rounded-lg px-4 py-2 shadow-sm"
-            >
-              <span className="text-sm text-amber-700 mr-2">Sort by:</span>
-              <select
-                value={selectedSort}
-                onChange={(e) => setSelectedSort(e.target.value)}
-                className="bg-transparent outline-none text-amber-900 cursor-pointer font-medium"
-              >
-                {sortOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-              
-            </motion.div>
+            <input
+              type="range"
+              min="0"
+              max="10000"
+              value={priceRange[1]}
+              onChange={(e) =>
+                setPriceRange([priceRange[0], Number(e.target.value)])
+              }
+              className="w-full mt-3 cursor-pointer accent-amber-600"
+            />
+            <p className="text-sm cursor-pointer text-gray-600 mt-1">
+              ₹{priceRange[0]} - ₹{priceRange[1]}
+            </p>
           </div>
 
-          {/* Animated Product Cards */}
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {sampleProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                whileHover={{ scale: 1.03 }}
-                className="bg-white rounded-xl border border-amber-200 hover:shadow-lg transition-all duration-300 overflow-hidden"
-              >
-                <div className="relative">
-                  {product.isNew && (
-                    <span className="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-md font-semibold">
-                      New
-                    </span>
-                  )}
-                  <button
-                    onClick={() => toggleFavorite(product.id)}
-                    className="absolute top-3 right-3 bg-white/80 p-2 rounded-full shadow-sm hover:shadow-md"
-                  >
-                    <Heart
-                      className={`w-4 h-4 ${
-                        favorites.has(product.id)
-                          ? "text-red-500 fill-red-500"
-                          : "text-gray-400"
+          {/* Categories */}
+          <h4 className="font-semibold text-gray-800 mb-2 border-b pb-2">
+            Categories
+          </h4>
+          <ul className="space-y-2">
+            {categories.map((cat) => {
+              const catName = cat.Name;
+              const isExpanded = expandedCategory === cat.id;
+              const isSelected = selectedCategory?.id === cat.id;
+              const hasSubs = cat.subcategories?.length > 0;
+
+              return (
+                <li key={cat.id} className="border-b border-amber-50 pb-2">
+                  <div className="flex items-center justify-between px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50 transition">
+                    <span
+                      onClick={() =>
+                        navigate(`/shop?category=${encodeURIComponent(catName)}`)
+                      }
+                      className={`flex-1 cursor-pointer ${
+                        isSelected
+                          ? "font-semibold text-amber-800 border-l-4 border-amber-600 pl-2"
+                          : ""
                       }`}
-                    />
-                  </button>
-                  <motion.img
-                    whileHover={{ scale: 1.08 }}
-                    transition={{ duration: 0.4 }}
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-56 object-cover"
-                  />
-                </div>
+                    >
+                      {catName}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {hasSubs &&
+                        (isExpanded ? (
+                          <ChevronUp
+                            size={18}
+                            className="text-amber-700 cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedCategory(null);
+                            }}
+                          />
+                        ) : (
+                          <ChevronDown
+                            size={18}
+                            className="text-amber-700 cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedCategory(cat.id);
+                            }}
+                          />
+                        ))}
 
-                <div className="p-4">
-                  <h3 className="font-semibold text-amber-900 text-sm mb-1 line-clamp-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-xs text-amber-700/70 mb-2 line-clamp-2">
-                    {product.description}
-                  </p>
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center text-yellow-500 text-sm">
-                      <Star className="w-4 h-4 fill-current mr-1" />
-                      {product.rating}
+                      {isSelected && (
+                        <X
+                          size={16}
+                          className="text-amber-700 hover:text-red-600 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedCategory(null);
+                            setSelectedSubcategory(null);
+                            navigate("/shop");
+                          }}
+                        />
+                      )}
                     </div>
-                    <p className="text-amber-800 font-bold">{product.price}</p>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-center py-12 text-amber-800/80 italic"
-          >
-            “May these sacred items bring peace, prosperity, and light to your path.”
+                  <AnimatePresence>
+                    {isExpanded && hasSubs && (
+                      <motion.ul
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="ml-6 mt-2 space-y-2"
+                      >
+                        {cat.subcategories.map((sub) => (
+                          <li
+                            key={sub.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(
+                                `/shop?subcategory=${encodeURIComponent(
+                                  sub.text
+                                )}`
+                              );
+                            }}
+                            className="px-3 py-2 text-sm rounded-md text-gray-600 hover:bg-amber-50 hover:text-amber-800 cursor-pointer transition"
+                          >
+                            {sub.text}
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
+
+        {/* 🟣 Product Grid */}
+        <main className="flex-1">
+          <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
+            <div className="flex items-center justify-between border border-amber-200 rounded-xl px-6 py-3 shadow-sm">
+              <h2 className="text-2xl font-serif px-2.5 text-amber-900 tracking-wide">
+                {selectedSubcategory?.text ||
+                  selectedCategory?.Name ||
+                  "All Products"}
+              </h2>
+
+              {(selectedCategory || selectedSubcategory) && (
+                <button
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setSelectedSubcategory(null);
+                    navigate("/shop");
+                  }}
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg shadow transition"
+                >
+                  <X size={16} className="cursor-pointer" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Product Cards */}
+          <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {filteredAndSortedProducts.length > 0 ? (
+              filteredAndSortedProducts.map((prod, index) => (
+                <motion.div
+                  layout
+                  key={prod.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  className="group bg-white rounded-2xl border border-amber-100 shadow-sm hover:shadow-md transition-all duration-500 overflow-hidden"
+                >
+                  <div className="relative w-full h-64 overflow-hidden bg-amber-50">
+                    <img
+                      src={prod.image}
+                      alt={prod.name}
+                      className="w-full h-full object-contain transform group-hover:scale-105 transition duration-700 ease-in-out"
+                    />
+                  </div>
+                  <div className="p-6 text-center">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2 group-hover:text-amber-800 transition">
+                      {prod.name}
+                    </h3>
+                    <p className="text-xl font-bold text-amber-700 mb-4">
+                      ₹{prod.price}
+                    </p>
+                    <button
+                      onClick={() => navigate(`/product/${prod.id}`)}
+                      className="w-full cursor-pointer bg-gradient-to-r  from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-medium py-2.5 rounded-lg shadow-sm hover:shadow-md transition"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 col-span-full">
+                No products found in this price range.
+              </p>
+            )}
           </motion.div>
-        </div>
-      </section>
+        </main>
+      </div>
     </div>
   );
 };

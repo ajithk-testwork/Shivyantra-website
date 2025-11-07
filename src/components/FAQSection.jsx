@@ -43,12 +43,11 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="relative py-24  overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,200,100,0.12)_0%,transparent_70%)] pointer-events-none"></div>
-
+    <section className="relative py-24 bg-transparent overflow-hidden">
+      {/* Header */}
       <div className="text-center relative mb-16 px-4">
         <div className="flex justify-center mb-3">
-          <Sparkles className="text-amber-700 w-8 h-8" />
+          <Sparkles className="text-amber-700 w-8 h-8 animate-pulse" />
         </div>
         <h2 className="text-4xl sm:text-5xl font-serif text-[#5a3e1b] tracking-wide">
           Frequently Asked <span className="text-[#a36f1f]">Questions</span>
@@ -59,41 +58,55 @@ const FAQSection = () => {
         <div className="mt-4 w-24 h-[2px] bg-amber-700 mx-auto rounded-full"></div>
       </div>
 
+      {/* FAQ Cards */}
       <div className="max-w-4xl mx-auto px-6 space-y-5">
         {faqs.map((faq, index) => (
           <motion.div
             key={index}
-            className="border border-amber-200 bg-white/80 backdrop-blur-md rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            transition={{ delay: index * 0.08, duration: 0.5 }}
+            className={`border border-amber-200 bg-white/80 backdrop-blur-md rounded-2xl shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1`}
           >
+            {/* Question */}
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex justify-between items-center px-6 py-5 text-left"
+              className="w-full flex justify-between items-center px-6 py-5 text-left group"
             >
-              <span className="text-lg font-semibold text-amber-900">
+              <span className="text-lg font-semibold text-amber-900 group-hover:text-amber-700 transition-colors duration-300">
                 {faq.question}
               </span>
-              {activeIndex === index ? (
-                <ChevronUp className="text-amber-700" />
-              ) : (
-                <ChevronDown className="text-amber-700" />
-              )}
+              <motion.div
+                animate={{ rotate: activeIndex === index ? 180 : 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                {activeIndex === index ? (
+                  <ChevronUp className="text-amber-700 w-6 h-6" />
+                ) : (
+                  <ChevronDown className="text-amber-700 w-6 h-6" />
+                )}
+              </motion.div>
             </button>
 
-            <AnimatePresence>
+            {/* Answer Animation */}
+            <AnimatePresence initial={false}>
               {activeIndex === index && (
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.4 }}
+                  key="content"
+                  initial={{ opacity: 0, height: 0, y: -10 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -10 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                 >
-                  <div className="px-6 pb-5 text-amber-800/90 leading-relaxed">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.15 }}
+                    className="px-6 pb-5 text-amber-800/90 leading-relaxed"
+                  >
                     {faq.answer}
-                  </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
