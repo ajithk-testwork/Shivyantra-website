@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Shop from "./pages/Shop";
 import Blog from "./pages/Blogs/Blog";
 import Contactus from "./pages/Contactus"
-import Cart from "./components/Cart";
+import Cart from "./pages/AddToCart/Cart";
 import Profile from "./components/Profile";
 import BlogContent from "./pages/Blogs/BlogContent";
 import MainNavbar from "./components/MainNavbar";

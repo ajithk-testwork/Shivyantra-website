@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/components/MainNavbar.jsx
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   PhoneCall,
@@ -24,6 +25,8 @@ const MainNavbar = () => {
   const [user, setUser] = useState(null);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+
 
   const links = [
     { name: "Home", path: "/" },
@@ -34,6 +37,8 @@ const MainNavbar = () => {
   ];
 
   useEffect(() => {
+
+    
     try {
       const raw = localStorage.getItem("user");
       if (raw && raw !== "undefined" && raw !== "null") {
@@ -43,58 +48,70 @@ const MainNavbar = () => {
     } catch (err) {
       console.error("Invalid user data in localStorage:", err);
       localStorage.removeItem("user");
+      setUser(null);
     }
+      // ✅ Load saved count on mount
+  const savedCount = parseInt(localStorage.getItem("cartCount") || "0", 10);
+  setCartCount(savedCount);
+
+  // ✅ Listen for any count updates
+  const handleCountUpdate = () => {
+    const updatedCount = parseInt(localStorage.getItem("cartCount") || "0", 10);
+    setCartCount(updatedCount);
+  };
+
+  window.addEventListener("cartCountUpdated", handleCountUpdate);
+
+  return () => window.removeEventListener("cartCountUpdated", handleCountUpdate);
   }, []);
 
   const handleLogout = async () => {
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
-  const refreshToken = localStorage.getItem("refresh_token") || user?.refresh_token;
+    const storedUser = localStorage.getItem("user");
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    const refreshToken = localStorage.getItem("refresh_token") || parsed?.refresh_token;
 
-  if (!refreshToken) {
-    toast.error("No active session found. Please login again.");
-    navigate("/");
-    return;
-  }
-
-  try {
-    const response = await axios.post(
-      LOGOUT_URL,
-      { refresh_token: refreshToken },
-      {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
-
-    console.log("✅ Logout successful:", response.data);
-
-    ["refresh_token", "user", "isLoginned"].forEach((key) =>
-      localStorage.removeItem(key)
-    );
-
-    toast.success("You’ve been logged out successfully!");
-    setShowLogoutPopup(true);
-
-    setTimeout(() => {
-      setShowLogoutPopup(false);
-      setUser(null);
+    if (!refreshToken) {
+      toast.error("No active session found. Please login again.");
       navigate("/");
-      window.location.reload();
-    }, 1500);
-  } catch (err) {
-    const message =
-      err.response?.data?.message ||
-      err.response?.data?.error?.message ||
-      "Logout failed. Please try again.";
+      return;
+    }
 
-    console.error("❌ Logout error:", err);
-    toast.error(message);
-  }
-};
+    try {
+      const response = await axios.post(
+        LOGOUT_URL,
+        { refresh_token: refreshToken },
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      ["refresh_token", "user", "isLoginned"].forEach((key) =>
+        localStorage.removeItem(key)
+      );
+
+      toast.success("You’ve been logged out successfully!");
+      setShowLogoutPopup(true);
+
+      setTimeout(() => {
+        setShowLogoutPopup(false);
+        setUser(null);
+        navigate("/");
+        window.location.reload();
+      }, 1200);
+    } catch (err) {
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.error?.message ||
+        "Logout failed. Please try again.";
+
+      console.error("❌ Logout error:", err);
+      toast.error(message);
+    }
+  };
 
   return (
     <nav className="w-full bg-white shadow-md sticky top-0 z-[1000] border-b border-amber-100">
@@ -111,7 +128,7 @@ const MainNavbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className="text-white text-md  font-semibold px-3 py-2 rounded-md hover:bg-white hover:text-amber-800 transition-all duration-300"
+              className="text-white text-md font-semibold px-3 py-2 rounded-md hover:bg-white hover:text-amber-800 transition-all duration-300"
             >
               {link.name}
             </Link>
@@ -132,7 +149,7 @@ const MainNavbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.28 }}
             className="lg:hidden bg-amber-600 flex flex-col items-center space-y-3 py-3"
           >
             {links.map((link) => (
@@ -140,7 +157,7 @@ const MainNavbar = () => {
                 key={link.name}
                 to={link.path}
                 onClick={() => setMenuOpen(false)}
-                className="text-white  text-md font-medium hover:bg-white hover:text-amber-800 px-4 py-2 rounded-md transition-all duration-300"
+                className="text-white text-md font-medium hover:bg-white hover:text-amber-800 px-4 py-2 rounded-md transition-all duration-300"
               >
                 {link.name}
               </Link>
@@ -149,7 +166,7 @@ const MainNavbar = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex   md:flex-row items-center justify-between px-6 py-3 gap-3 md:gap-0">
+      <div className="flex md:flex-row items-center justify-between px-6 py-3 gap-3 md:gap-0">
         <div className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-700">
           <PhoneCall className="w-4 h-4 text-amber-700" />
           <span>+91 9876543210</span>
@@ -167,11 +184,15 @@ const MainNavbar = () => {
 
         <div className="flex items-center gap-5 text-gray-700">
           <Link to="/cart" className="relative">
-            <ShoppingBag className="w-6 h-6 hover:text-amber-700 transition-colors duration-200" />
-            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-              0
-            </span>
-          </Link>
+  <ShoppingBag className="w-6 h-6 hover:text-amber-700 transition-colors duration-200" />
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+      {cartCount}
+    </span>
+  )}
+</Link>
+
+
 
           {user ? (
             <div
@@ -197,7 +218,7 @@ const MainNavbar = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.18 }}
                     className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
                   >
                     <button
